@@ -1,0 +1,389 @@
+@import url("https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Parkinsans:wght@300..800&display=swap");
+:root {
+  /* فونت فارسی و انگلیسی */
+  --tg-body-font-family: "Vazirmatn", sans-serif;
+  --tg-heading-font-family: "Vazirmatn", sans-serif;
+  --tg-icon-font-family: "Font Awesome 5 Free";
+  --tg-body-font-size: 16px;
+  --tg-body-line-height: 1.5;
+  --tg-heading-line-height: 1.2;
+  --tg-body-font-color: #888888;
+  --tg-heading-font-color: #FFFFFF;
+  --tg-primary-color: #FFCC66;
+  --tg-secondary-color: #191A1B;
+  --tg-color-dark-blue: #0E104B;
+  --tg-color-yellow-light: #FFBE17;
+  --tg-color-yellow-light-2: #FFFBF3;
+  --tg-color-white-default: #ffffff;
+  --tg-color-gray-1: #5B5B5B;
+  --tg-color-dark: #151515;
+  --tg-border-1: #363636;
+  --tg-fw-extra-bold: 800;
+  --tg-fw-bold: 700;
+  --tg-fw-semi-bold: 600;
+  --tg-fw-medium: 500;
+  --tg-fw-regular: 400;
+  --tg-fw-light: 300;
+}
+
+/*=============================
+	Typography css start
+===============================*/
+body {
+  font-family: var(--tg-body-font-family);
+  font-size: var(--tg-body-font-size);
+  font-weight: var(--tg-fw-regular);
+  color: var(--tg-body-font-color);
+  line-height: var(--tg-body-line-height);
+  background-color: var(--tg-color-dark);
+  direction: rtl;
+}
+
+img,
+.img {
+  max-width: 100%;
+  -webkit-transition: all 0.3s ease-out 0s;
+  -moz-transition: all 0.3s ease-out 0s;
+  -ms-transition: all 0.3s ease-out 0s;
+  -o-transition: all 0.3s ease-out 0s;
+  transition: all 0.3s ease-out 0s;
+}
+
+a,
+button {
+  color: var(--tg-primary-color);
+  outline: none;
+  text-decoration: none;
+  -webkit-transition: all 0.3s ease-out 0s;
+  -moz-transition: all 0.3s ease-out 0s;
+  -ms-transition: all 0.3s ease-out 0s;
+  -o-transition: all 0.3s ease-out 0s;
+  transition: all 0.3s ease-out 0s;
+}
+
+a:focus,
+.btn:focus,
+.button:focus {
+  text-decoration: none;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -ms-box-shadow: none;
+  -o-box-shadow: none;
+  box-shadow: none;
+}
+
+a:hover,
+button:hover {
+  color: var(--tg-primary-color);
+  text-decoration: none;
+}
+
+button:focus,
+input:focus,
+input:focus,
+textarea,
+textarea:focus {
+  outline: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--tg-heading-font-family);
+  color: var(--tg-heading-font-color);
+  margin-top: 0px;
+  font-weight: var(--tg-fw-semi-bold);
+  line-height: var(--tg-heading-line-height);
+}
+
+th {
+  font-family: var(--tg-heading-font-family);
+}
+
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+  color: inherit;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+.list-wrap {
+  margin: 0px;
+  padding: 0px;
+}
+
+.list-wrap li {
+  list-style: none;
+}
+
+p {
+  font-family: var(--tg-body-font-family);
+  font-size: var(--tg-body-font-size);
+  line-height: var(--tg-body-line-height);
+  font-weight: var(--tg-fw-regular);
+  color: var(--tg-body-font-color);
+  margin-bottom: 15px;
+}
+
+span[lang=en] {
+  direction: ltr;
+  unicode-bidi: embed;
+  font-family: "Parkinsans", sans-serif;
+}
+
+hr {
+  border-bottom: 1px solid var(--tg-common-color-gray);
+  border-top: 0 none;
+  margin: 30px 0;
+  padding: 0;
+}
+
+label {
+  color: var(--tg-heading-font-color);
+  cursor: pointer;
+  font-size: var(--tg-body-font-size);
+  font-weight: var(--tg-fw-regular);
+}
+
+input[type=color] {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  border-radius: 50%;
+}
+
+*::-moz-selection {
+  background: var(--tg-primary-color);
+  color: var(--tg-color-white-default);
+  text-shadow: none;
+}
+
+::-moz-selection {
+  background: var(--tg-primary-color);
+  color: var(--tg-color-white-default);
+  text-shadow: none;
+}
+
+::selection {
+  background: var(--tg-primary-color);
+  color: var(--tg-color-white-default);
+  text-shadow: none;
+}
+
+
+.tg-header__area {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(21, 21, 21, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--tg-border-1);
+}
+
+.tgmenu__wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+}
+
+.tgmenu__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.logo img {
+    height: 40px;
+}
+
+.navigation {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 2rem;
+}
+
+.navigation li a {
+    color: var(--tg-body-font-color);
+    text-decoration: none;
+    font-weight: var(--tg-fw-medium);
+    transition: color 0.3s ease;
+}
+
+.navigation li a:hover {
+    color: var(--tg-primary-color);
+}
+
+.menu-item-has-children {
+    position: relative;
+}
+
+.sub-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--tg-color-dark);
+    border: 1px solid var(--tg-border-1);
+    border-radius: 8px;
+    padding: 0.5rem 0;
+    min-width: 150px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.menu-item-has-children:hover .sub-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.sub-menu li {
+    padding: 0.5rem 1rem;
+}
+
+.tg-btn {
+    background: var(--tg-primary-color);
+    color: var(--tg-color-dark);
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: var(--tg-fw-semi-bold);
+    transition: all 0.3s ease;
+}
+
+.tg-btn:hover {
+    background: var(--tg-color-yellow-light);
+    transform: translateY(-2px);
+}
+
+.mobile-nav-toggler {
+    display: none;
+    color: var(--tg-heading-font-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+    .tgmenu__navbar-wrap {
+        display: none !important;
+    }
+    .mobile-nav-toggler {
+        display: block;
+    }
+}
+
+.crypto-card {
+    transition: all 0.3s ease;
+    background: var(--tg-secondary-color);
+    border: 1px solid var(--tg-border-1);
+}
+
+.crypto-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    border-color: var(--tg-primary-color);
+}
+
+.crypto-card.selected {
+    background: var(--tg-primary-color);
+    color: var(--tg-color-dark);
+    transform: scale(1.05);
+    border-color: var(--tg-color-yellow-light);
+}
+
+.loading-spinner {
+    border: 4px solid var(--tg-border-1);
+    border-top: 4px solid var(--tg-primary-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.price-card {
+    background: var(--tg-secondary-color);
+    border: 1px solid var(--tg-border-1);
+}
+
+.analysis-card {
+    background: var(--tg-secondary-color);
+    border: 1px solid var(--tg-border-1);
+}
+
+.forecast-card {
+    background: var(--tg-secondary-color);
+    border: 1px solid var(--tg-border-1);
+}
+
+.risk-card {
+    background: var(--tg-secondary-color);
+    border: 1px solid var(--tg-border-1);
+}
+
+.trend-bullish {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.trend-bearish {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}

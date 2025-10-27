@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Taha Elahibakhsh - AI Researcher</title>
+    <style>
+        /* ---------- Theme variables (dark default) ---------- */
+        :root{
+            --bg1: #0b0c10;
+            --bg2: #1a1a2e;
+            --bg3: #16213e;
+
+            --card-bg: rgba(255,255,255,0.05);
+            --glass: rgba(255,255,255,0.05);
+            --glass-strong: rgba(255,255,255,0.1);
+            --border: rgba(255,255,255,0.1);
+
+            --text-main: #ffffff;
+            --text-muted: rgba(255,255,255,0.7);
+            --muted-2: rgba(255,255,255,0.6);
+
+            --accent1: 0, 255, 195; /* used as rgb pieces for rgba() */
+            --accent2: 155, 124, 255;
+            --accent3: 0, 153, 204;
+            --accent4: 255, 107, 157;
+
+            --accent1-opaque: rgba(0,255,195,0.15);
+            --accent2-opaque: rgba(155,124,255,0.12);
+            --film-grain-opacity: 0.3;
+
+            --transition-fast: 0.25s;
+            --transition-slow: 0.6s;
+        }
+
+        /* ---------- Light theme override ---------- */
+        .light-theme{
+            --bg1: #f6f7fb;
+            --bg2: #eef2ff;
+            --bg3: #e6eefb;
+
+            --card-bg: rgba(10,12,20,0.04);
+            --glass: rgba(0,0,0,0.04);
+            --glass-strong: rgba(0,0,0,0.06);
+            --border: rgba(11,19,32,0.06);
+
+            --text-main: #0b1320;
+            --text-muted: rgba(11,19,32,0.7);
+            --muted-2: rgba(11,19,32,0.6);
+
+            --accent1: 0,127,102;
+            --accent2: 107,79,184;
+            --accent3: 0,104,138;
+            --accent4: 178,75,102;
+
+            --accent1-opaque: rgba(0,127,102,0.12);
+            --accent2-opaque: rgba(107,79,184,0.12);
+            --film-grain-opacity: 0.08;
+        }
+
+        /* ---------- Base / Reset ---------- */
+        *{box-sizing:border-box;margin:0;padding:0}
+        html,body{height:100%}
+        body{
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 50%, var(--bg3) 100%);
+            min-height:100vh;
+            overflow-x:hidden;
+            position:relative;
+            color:var(--text-main);
+            transition: background var(--transition-slow), color var(--transition-slow);
+        }
+
+        /* Background Effects */
+        .bg-effects{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+        .bg-glow-1{
+            position:absolute;top:10%;left:10%;width:400px;height:400px;
+            background: radial-gradient(circle, var(--accent1-opaque) 0%, transparent 70%);
+            border-radius:50%;animation:float 8s ease-in-out infinite;
+            transition:background var(--transition-slow);
+        }
+        .bg-glow-2{
+            position:absolute;bottom:10%;right:10%;width:300px;height:300px;
+            background: radial-gradient(circle, var(--accent2-opaque) 0%, transparent 70%);
+            border-radius:50%;animation:float 6s ease-in-out infinite reverse;
+            transition:background var(--transition-slow);
+        }
+        .film-grain{
+            position:absolute;top:0;left:0;width:100%;height:100%;
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,0.01) 2px, rgba(255,255,255,0.01) 4px);
+            opacity:var(--film-grain-opacity);
+            transition:opacity var(--transition-fast);
+        }
+        .vignette{
+            position:absolute;top:0;left:0;width:100%;height:100%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(11,12,16,0.6) 100%);
+            mix-blend-mode:multiply;
+            transition: background var(--transition-slow);
+        }
+
+        /* Main Container */
+        .container{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+        .portfolio-card{
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius:24px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.03);
+            max-width:1200px;width:100%;display:flex;overflow:hidden;position:relative;
+            transition: background var(--transition-slow), border-color var(--transition-slow), box-shadow var(--transition-slow);
+        }
+        .portfolio-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);opacity:0.12}
+
+        /* Control buttons (replay + theme) */
+        .controls{
+            position:absolute;top:18px;right:18px;display:flex;gap:10px;z-index:10;
+        }
+        .control-btn{
+            background: var(--glass);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding:8px 12px;border-radius:12px;font-size:13px;cursor:pointer;
+            transition: all var(--transition-fast);
+        }
+        .control-btn:hover{transform:translateY(-2px);color:var(--text-main);background:var(--glass-strong)}
+        .theme-toggle{display:flex;align-items:center;gap:8px;padding:8px 10px}
+
+        /* Left Column */
+        .left-column{width:360px;padding:40px;background:transparent;border-right:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;align-items:center;transition:border-color var(--transition-slow)}
+        .avatar-container{margin-bottom:30px;position:relative}
+        .avatar{width:180px;height:180px;border-radius:50%;background:linear-gradient(135deg, rgba(var(--accent1),1) 0%, rgba(var(--accent2),1) 100%);padding:4px;position:relative;animation:avatarFloat 4s ease-in-out infinite;transition:background var(--transition-slow)}
+        .avatar-inner{width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,var(--bg2),var(--bg3));display:flex;align-items:center;justify-content:center;font-size:64px;font-weight:bold;color:var(--text-main);position:relative;overflow:hidden}
+        .avatar-inner img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+
+        .name-section{text-align:center;margin-bottom:30px}
+        .name{font-size:28px;font-weight:700;color:var(--text-main);margin-bottom:8px;letter-spacing:-0.5px}
+        .title{color:var(--text-muted);font-size:14px;margin-bottom:16px}
+        .tagline{margin-top: 60PX; display:inline-block;padding:8px 16px;background:linear-gradient(135deg, rgba(var(--accent1),0.12), rgba(var(--accent2),0.08));border:1px solid rgba(var(--accent1),0.18);border-radius:20px;font-size:11px;color:rgb(var(--accent1));text-align:center;line-height:1.3}
+
+        /* Meta Items */
+        .meta-items{width:100%;margin-bottom:30px}
+        .meta-item{display:flex;align-items:center;margin-bottom:16px;opacity:0;transform:translateY(20px);transition:all 0.6s ease}
+        .meta-item.visible{opacity:1;transform:translateY(0)}
+        .meta-dot{width:8px;height:8px;border-radius:50%;margin-right:16px;position:relative}
+        .meta-dot::after{content:'';position:absolute;top:-2px;left:-2px;right:-2px;bottom:-2px;border-radius:50%;background:inherit;opacity:0.3;animation:pulse 2s ease-in-out infinite}
+        .meta-dot.dot-1{background:linear-gradient(135deg, rgba(var(--accent1),1), rgba(var(--accent3),1))}
+        .meta-dot.dot-2{background:linear-gradient(135deg, rgba(var(--accent3),1), rgba(var(--accent2),1))}
+        .meta-dot.dot-3{background:linear-gradient(135deg, rgba(var(--accent2),1), rgba(var(--accent4),1))}
+        .meta-dot.dot-4{background:linear-gradient(135deg, rgba(var(--accent4),1), rgba(var(--accent1),1))}
+        .meta-text{color:var(--text-muted);font-size:14px}
+
+        /* Social Buttons */
+        .social-buttons{display:flex;gap:12px}
+        .social-btn{width:44px;height:44px;background:var(--glass);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--transition-fast)}
+         .social-btn{width:44px;height:44px;background:var(--glass);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--transition-fast)}
+        .social-btn img{width:30px;height:30px;}
+        .social-btn:hover{background:var(--glass-strong);color:var(--text-main);transform:translateY(-3px);box-shadow:0 8px 25px rgba(var(--accent1),0.12)}
+
+        /* Right Column */
+        .right-column{flex:1;padding:40px}
+
+        /* Top Section */
+        .top-section{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:40px}
+        .about-section h2{font-size:24px;font-weight:600;color:var(--text-main);margin-bottom:16px}
+        .about-text{color:var(--muted-2);font-size:14px;line-height:1.6;max-width:400px}
+        .highlights{margin-left: 30px; margin-top: 60px; display:flex;flex-wrap:wrap;gap:8px;max-width:300px}
+        .highlight-badge{padding:6px 12px;border-radius:16px;font-size:11px;border:1px solid;opacity:0;transform:scale(0);animation:badgePop 0.5s cubic-bezier(0.68,-0.55,0.265,1.55) forwards}
+        .highlight-badge:nth-child(1){background:rgba(var(--accent1),0.1);color:rgb(var(--accent1));border-color:rgba(var(--accent1),0.3);animation-delay:0.1s}
+        .highlight-badge:nth-child(2){background:rgba(var(--accent2),0.1);color:rgb(var(--accent2));border-color:rgba(var(--accent2),0.3);animation-delay:0.2s}
+        .highlight-badge:nth-child(3){background:rgba(var(--accent3),0.1);color:rgb(var(--accent3));border-color:rgba(var(--accent3),0.3);animation-delay:0.3s}
+        .highlight-badge:nth-child(4){background:rgba(var(--accent4),0.1);color:rgb(var(--accent4));border-color:rgba(var(--accent4),0.3);animation-delay:0.4s}
+        .highlight-badge:nth-child(5){background:rgba(52,211,153,0.1);color:#34D399;border-color:rgba(52,211,153,0.3);animation-delay:0.5s}
+
+        /* Section */
+        .section{margin-bottom:40px;opacity:0;transform:translateY(30px);transition:all 0.8s ease}
+        .section.visible{opacity:1;transform:translateY(0)}
+        .section h3{font-size:20px;font-weight:600;color:var(--text-main);margin-bottom:20px}
+
+        /* Skills Grid */
+        .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+        .skill-card{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:24px;transition:all var(--transition-fast);position:relative;overflow:hidden}
+        .skill-card::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.05),transparent);transition:left 0.5s ease}
+        .skill-card:hover{transform:translateY(-8px);background:var(--glass-strong);box-shadow:0 20px 40px rgba(0,0,0,0.07)}
+        .skill-card:hover::before{left:100%}
+        .skill-title{font-size:16px;font-weight:600;color:var(--text-main);margin-bottom:16px}
+        .progress-container{margin-bottom:16px;position:relative}
+        .progress-bg{width:100%;height:8px;background:rgba(0,0,0,0.06);border-radius:4px;overflow:hidden}
+        .progress-bar{height:100%;width:6%;border-radius:4px;position:relative;transition:width 2s cubic-bezier(0.4,0,0.2,1)}
+        .progress-bar.bar-1{background:linear-gradient(90deg, rgba(var(--accent1),1), rgba(var(--accent3),1))}
+        .progress-bar.bar-2{background:linear-gradient(90deg, rgba(var(--accent3),1), rgba(var(--accent2),1))}
+        .progress-bar.bar-3{background:linear-gradient(90deg, rgba(var(--accent2),1), rgba(var(--accent4),1))}
+        .progress-bar.bar-4{background:linear-gradient(90deg, rgba(var(--accent4),1), rgba(var(--accent1),1))}
+        .progress-percent{position:absolute;right:0;top:-24px;font-size:12px;font-weight:600;color:rgb(var(--accent1))}
+
+        .skill-desc{font-size:12px;color:var(--muted-2);line-height:1.4}
+
+        /* Pills */
+        .pills-container{display:flex;flex-wrap:wrap;gap:12px}
+        .pill{padding:8px 16px;background:var(--glass);border:1px solid var(--border);border-radius:20px;font-size:13px;color:var(--text-muted);cursor:pointer;transition:all var(--transition-fast);position:relative;overflow:hidden}
+        .pill::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(var(--accent1),0.1),transparent);transition:left 0.3s ease}
+        .pill:hover{transform:scale(1.05);background:var(--glass-strong);color:var(--text-main);border-color:rgba(var(--accent1),0.2)}
+        .pill:hover::before{left:100%}
+
+        /* Timeline */
+        .timeline{position:relative}
+        .timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom, rgb(var(--accent1)), rgb(var(--accent2)));opacity:0.3}
+        .timeline-item{position:relative;padding-left:40px;margin-bottom:30px}
+        .timeline-dot{position:absolute;left:-6px;top:8px;width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,rgb(var(--accent1)),rgb(var(--accent2)));box-shadow:0 0 0 4px rgba(var(--accent1),0.12)}
+        .timeline-content{display:flex;justify-content:space-between;align-items:flex-start}
+        .timeline-year{display:inline-block;padding:4px 12px;background:rgba(var(--accent1),0.08);color:rgb(var(--accent1));border-radius:12px;font-size:11px;font-weight:600;margin-bottom:8px}
+        .timeline-title{font-size:16px;font-weight:600;color:var(--text-main);margin-bottom:4px}
+        .timeline-desc{font-size:13px;color:var(--muted-2)}
+
+        /* Projects */
+        .project-item{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;display:flex;align-items:center;gap:20px;transition:all var(--transition-fast)}
+        .project-item:hover{background:var(--glass-strong);transform:translateX(8px)}
+        .project-thumb{width:64px;height:64px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:bold;color:var(--text-main);flex-shrink:0}
+        .project-thumb.thumb-1{background:linear-gradient(135deg, rgba(var(--accent1),1), rgba(var(--accent3),1))}
+        .project-thumb.thumb-2{background:linear-gradient(135deg, rgba(var(--accent2),1), rgba(var(--accent4),1))}
+        .project-content{flex:1}
+        .project-title{font-size:16px;font-weight:600;color:var(--text-main);margin-bottom:6px}
+        .project-desc{font-size:13px;color:var(--muted-2);margin-bottom:12px}
+        .project-buttons{display:flex;gap:8px}
+
+        /* Buttons */
+        .btn{padding:8px 16px;background:var(--glass);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--text-muted);cursor:pointer;transition:all var(--transition-fast)}
+        .btn:hover{background:var(--glass-strong);color:var(--text-main);transform:translateY(-2px);box-shadow:0 8px 25px rgba(var(--accent1),0.12)}
+        .btn-primary{background:rgba(var(--accent1),0.1);border-color:rgba(var(--accent1),0.18);color:rgb(var(--accent1))}
+        .btn-primary:hover{background:rgba(var(--accent1),0.18)}
+
+        /* CTA Buttons */
+        .cta-buttons{display:flex;gap:16px}
+        .cta-btn{flex:1;padding:16px 24px;background:var(--glass);border:1px solid var(--border);border-radius:12px;font-size:14px;color:var(--text-muted);cursor:pointer;transition:all var(--transition-fast);text-align:center}
+        .cta-btn:hover{background:var(--glass-strong);color:var(--text-main);transform:translateY(-4px);box-shadow:0 12px 30px rgba(var(--accent1),0.12)}
+
+        /* Modal & Toast */
+        .modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:1000}
+        .modal.show{display:flex}
+        .modal-content{background:var(--card-bg);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:20px;padding:32px;max-width:500px;margin:20px;animation:modalSlideIn 0.3s ease}
+        .modal-title{font-size:20px;font-weight:600;color:var(--text-main);margin-bottom:16px}
+        .modal-text{color:var(--muted-2);font-size:14px;line-height:1.6;margin-bottom:24px}
+
+        .toast{position:fixed;bottom:20px;right:20px;background:var(--glass);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:12px;padding:16px 20px;color:var(--text-main);font-size:14px;transform:translateY(100px);opacity:0;transition:all var(--transition-fast);z-index:1001}
+        .toast.show{transform:translateY(0);opacity:1}
+
+        /* Animations */
+        @keyframes float{0%,100%{transform:translateY(0px)}50%{transform:translateY(-20px)}}
+        @keyframes avatarFloat{0%,100%{transform:translateY(0px) rotate(0deg)}50%{transform:translateY(-12px) rotate(2deg)}}
+        @keyframes shimmer{0%{transform:translateX(-100%) translateY(-100%) rotate(45deg)}100%{transform:translateX(100%) translateY(100%) rotate(45deg)}}
+        @keyframes pulse{0%,100%{transform:scale(1);opacity:0.3}50%{transform:scale(1.2);opacity:0.1}}
+        @keyframes badgePop{0%{transform:scale(0);opacity:0}80%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+        @keyframes modalSlideIn{0%{transform:scale(0.8) translateY(20px);opacity:0}100%{transform:scale(1) translateY(0);opacity:1}}
+
+        /* Responsive */
+        @media (max-width:768px){
+            .portfolio-card{flex-direction:column;margin:10px}
+            .left-column{width:100%;padding:30px 20px;border-right:0;border-bottom:1px solid var(--border)}
+            .right-column{padding:30px 20px}
+            .top-section{flex-direction:column;gap:20px}
+            .skills-grid{grid-template-columns:1fr}
+            .cta-buttons{flex-direction:column}
+            .controls{top:10px;right:10px}
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-effects">
+        <div class="bg-glow-1"></div>
+        <div class="bg-glow-2"></div>
+        <div class="film-grain"></div>
+        <div class="vignette"></div>
+    </div>
+
+    <div class="container">
+        <div class="portfolio-card">
+            <div class="controls">
+                <button class="control-btn replay-btn" onclick="replayIntro()">Replay Intro</button>
+                <button id="themeToggle" class="control-btn theme-toggle" onclick="toggleTheme()" aria-pressed="false" title="Toggle theme">🌙</button>
+            </div>
+
+            <!-- Left Column -->
+            <div class="left-column">
+                <div class="avatar-container intro-element">
+                    <div class="avatar">
+                        <div class="avatar-inner">
+                            <img src="taha.jpg" alt="Taha Elahibakhsh">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="name-section intro-element">
+                    <div class="name">Taha Elahibakhsh</div>
+                    <div class="title">AI & LLM Researcher · Agentic Systems</div>
+                    <div class="tagline">Skills - Education - Languages - contact</div>
+                </div>
+
+                <div class="meta-items">
+                    <div class="meta-item">
+                        <div class="meta-dot dot-1"></div>
+                        <div class="meta-text">AI Theory</div>
+                    </div>
+
+                    <div class="meta-item">
+                        <div class="meta-dot dot-2"></div>
+                        <div class="meta-text">Data Analyse • AI</div>
+                    </div>
+
+                    <div class="meta-item">
+                        <div class="meta-dot dot-3"></div>
+                        <div class="meta-text">Agentic Systems</div>
+                    </div>
+
+                    <div class="meta-item">
+                        <div class="meta-dot dot-1"></div>
+                        <div class="meta-text">ML • RL • DL</div>
+                    </div>
+
+                    <div class="meta-item">
+                        <div class="meta-dot dot-3"></div>
+                        <div class="meta-text">Graphic Design • Adobe</div>
+                    </div>
+
+                    <div class="meta-item">
+                        <div class="meta-dot dot-2"></div>
+                        <div class="meta-text">Web Design • HTML & CSS & JS</div>
+                    </div>
+                    
+                    <br>
+                    <br>
+                    <br>
+
+                    <div class="meta-item">
+                        <div class="meta-dot dot-2"></div>
+                        <div class="meta-text">Helli 7 High Shool</div>
+                    </div>
+
+                    <div class="meta-item">
+                        <div class="meta-dot dot-3"></div>
+                        <div class="meta-text">IOAI</div>
+                    </div>
+
+                    <br>
+                    <br>
+                    <br>
+
+                    <div class="meta-item">
+                        <div class="meta-dot dot-2"></div>
+                        <div class="meta-text">Persian (Fluent)</div>
+                    </div>
+
+                    <div class="meta-item">
+                        <div class="meta-dot dot-3"></div>
+                        <div class="meta-text">English (Fluent)</div>
+                    </div>
+                    
+                    <div class="meta-item">
+                        <div class="meta-dot dot-3"></div>
+                        <div class="meta-text">Arabic (Intermediate)</div>
+                    </div>
+
+                    <br>
+                    <br>
+                    <br>
+
+                </div>
+                <div class="social-buttons intro-element">
+                    <div class="social-btn"><a target="_blank" href="https://github.com/tahaElahibakhsh"><img src="icons/github.svg" alt=""></a></div>
+                    <div class="social-btn"><a target="_blank" href="https://www.linkedin.com/in/taha-elahibakhsh-338595377/"><img src="icons/linkedin.svg" alt=""></a></div>
+                    <div class="social-btn"><a target="_blank" href="https://t.me/TahouEB"><img src="icons/telegram.svg" alt=""></a></div>
+                </div>
+            </div>
+            
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <div class="top-section section">
+                    <div class="about-section">
+                        <h2>About</h2>
+                        <div class="about-text">
+                            Passionate AI researcher specializing in data analyse and natural language processing and agentic systems. 
+                            Experienced in developing intelligent solutions for petrochemical and financial sectors.
+                        </div>
+                    </div>
+                    <div class="highlights">
+                        <div class="highlight-badge">AI Olympiad</div>
+                        <div class="highlight-badge">Petrochemical AI</div>
+                        <div class="highlight-badge">Agentic Finance</div>
+                        <div class="highlight-badge">Adobe Suite</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Technical Skills</h3>
+                    <div class="skills-grid">
+                        <div class="skill-card" data-target="92">
+                            <div class="skill-title">Python / AI Libraries</div>
+                            <div class="progress-container">
+                                <div class="progress-bg">
+                                    <div class="progress-bar bar-1">
+                                        <div class="progress-percent">6%</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="skill-desc">PyTorch, TensorFlow, Hugging Face, Transformers, scikit-learn</div>
+                        </div>
+
+                        <div class="skill-card" data-target="68">
+                            <div class="skill-title">NLP & LLM models</div>
+                            <div class="progress-container">
+                                <div class="progress-bg">
+                                    <div class="progress-bar bar-3">
+                                        <div class="progress-percent">6%</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="skill-desc">Language models, embeddings, sequence modeling, tokenization pipelines</div>
+                        </div>
+
+                        <div class="skill-card" data-target="78">
+                            <div class="skill-title">Agentic Systems & RL</div>
+                            <div class="progress-container">
+                                <div class="progress-bg">
+                                    <div class="progress-bar bar-2">
+                                        <div class="progress-percent">6%</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="skill-desc">Multi-agent frameworks, reinforcement learning, autonomous decision systems, N8N, Langchain</div>
+                        </div>
+
+                        <div class="skill-card" data-target="100">
+                            <div class="skill-title">Data Science & Analyse</div>
+                            <div class="progress-container">
+                                <div class="progress-bg">
+                                    <div class="progress-bar bar-4">
+                                        <div class="progress-percent">6%</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="skill-desc">Pandas, NumPy, statistical modeling, data visualization, feature engineering</div>
+                        </div>
+
+                        <div class="skill-card" data-target="85">
+                            <div class="skill-title">Front-End Development</div>
+                            <div class="progress-container">
+                                <div class="progress-bg">
+                                    <div class="progress-bar bar-1">
+                                        <div class="progress-percent">6%</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="skill-desc">HTML, CSS, JavaScript, React, Vue.js, Bootstrap, SASS</div>
+                        </div>
+
+                        <div class="skill-card" data-target="65">
+                            <div class="skill-title">Back-End Development</div>
+                            <div class="progress-container">
+                                <div class="progress-bg">
+                                    <div class="progress-bar bar-3">
+                                        <div class="progress-percent">6%</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="skill-desc">Node.js, Express, Django, Flask, SQL, NoSQL (MongoDB)</div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Programming Languages & Tools</h3>
+                    <div class="pills-container">
+                        <div class="pill" onclick="expandPill(this, 'Advanced proficiency in Python for AI/ML development')">Python</div>
+                        <div class="pill" onclick="expandPill(this, 'Statistical computing and data analysis')">R</div>
+                        <div class="pill" onclick="expandPill(this, 'Web development and data visualization')">JavaScript</div>
+                        <div class="pill" onclick="expandPill(this, 'Database management and queries')">SQL</div>
+                        <div class="pill" onclick="expandPill(this, 'Version control and collaboration')">Git</div>
+                        <div class="pill" onclick="expandPill(this, 'Containerization and deployment')">Docker</div>
+                        <div class="pill" onclick="expandPill(this, 'Application development with .NET, C#, and Blazor')">C#</div>                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Experience & Collaborations</h3>
+                    <div class="timeline">
+            
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div>
+                                    <div class="timeline-year">2022</div>
+                                    <div class="timeline-title">NODET Allameh Helli 7 High School</div>
+                                    <div class="timeline-desc">Admitted to the National Organization for Development of Exceptional Talents (NODET) — Software Engineering major</div>
+                                </div>
+                                <button class="btn" onclick="openModal('Helli')">Details</button>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div>
+                                    <div class="timeline-year">2022</div>
+                                    <div class="timeline-title">IOAI Artificial-Intelligence</div>
+                                    <div class="timeline-desc">Artificial-Intelligence Olympiad</div>
+                                </div>
+                                <button class="btn" onclick="openModal('IOAI')">Details</button>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div>
+                                    <div class="timeline-year">2024</div>
+                                    <div class="timeline-title">ELECOMP Exhibition</div>
+                                    <div class="timeline-desc">
+                                        Presented our AI-driven crypto prediction and consulting system, gaining investor interest and partnerships with exchanges.
+                                    </div>
+                                </div>
+                                <button class="btn" onclick="openModal('elecomp')">Details</button>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div>
+                                    <div class="timeline-year">2023</div>
+                                    <div class="timeline-title">Financial AI Systems Development</div>
+                                    <div class="timeline-desc">Built agentic systems for automated trading analysis</div>
+                                </div>
+                                <button class="btn" onclick="openModal('financial')">Details</button>
+
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div>
+                                    <div class="timeline-year">2024</div>
+                                    <div class="timeline-title">AI Research Collaboration - Petrochemical Industry</div>
+                                    <div class="timeline-desc">Developed predictive models for process optimization</div>
+                                </div>
+                                <button class="btn" onclick="openModal('petrochemical')">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Selected Projects</h3>
+                    <div class="project-item">
+                        <div class="project-thumb thumb-1">NLP</div>
+                        <div class="project-content">
+                            <div class="project-title">Natural Language Processing System</div>
+                            <div class="project-desc">Advanced NLP pipeline with Petrochemical collaborative for document analysis</div>
+                            <div class="project-buttons">
+                                <button class="btn" onclick="showToast('Project view coming soon!')">View</button>
+                                <button class="btn btn-primary" onclick="showToast('Demo available on request!')">Demo</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-item">
+                        <div class="project-thumb thumb-2">RL</div>
+                        <div class="project-content">
+                            <div class="project-title">Reinforcement Learning & Agentical Trading Agent</div>
+                            <div class="project-desc">Autonomous trading system using deep RL for financial market analysis</div>
+                            <div class="project-buttons">
+                                    <a target="_blank" class="btn btn-primary" href="templates/index.html">Demo</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-item">
+                        <div class="project-thumb thumb-1">ML</div>
+                        <div class="project-content">
+                            <div class="project-title">Machine Learning Prediction Models</div>
+                            <div class="project-desc">Prediction Models on Dataset with more than 80% accuracy</div>
+                            <div class="project-buttons">
+                                    <a target="_blank" class="btn" href="https://github.com/tahaElahibakhsh/machine_learning">View</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-item">
+                        <div class="project-thumb thumb-2">ML</div>
+                        <div class="project-content">
+                            <div class="project-title">Deep Learning Prediction Models</div>
+                            <div class="project-desc"> DL Prediction Models on Dataset with more than 80% accuracy</div>
+                            <div class="project-buttons">
+                                <a target="_blank" class="btn" href="https://github.com/tahaElahibakhsh/deep_learning">View</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="section">
+                    <div class="cta-buttons">
+                        <button class="cta-btn" onclick="copyEmail()">Email</button>
+                        <button class="cta-btn" onclick="copyNumber()">Phone number</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+
+    <div id="modal-Helli" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">Admission to Allameh Helli 7 High School</div>
+            <div class="modal-text">
+                Accepted into the National Organization for Development of Exceptional Talents (NODET) — Allameh Helli 7,  
+                one of Iran’s top selective schools, specializing in Software Engineering and advanced STEM education.
+            </div>
+            <button class="btn btn-primary" onclick="closeModal('Helli')">Close</button>
+        </div>
+    </div>
+
+    <div id="modal-petrochemical" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">Petrochemical AI Collaboration</div>
+            <div class="modal-text">
+                Developed advanced machine learning models for process optimization in petrochemical manufacturing. 
+                Implemented predictive maintenance systems and quality control algorithms that improved efficiency by 23%.
+            </div>
+            <button class="btn btn-primary" onclick="closeModal('petrochemical')">Close</button>
+        </div>
+    </div>
+
+    <div id="modal-financial" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">Financial AI Systems</div>
+            <div class="modal-text">
+                Built sophisticated agentic systems for automated financial analysis and trading strategy development. 
+                Integrated multiple data sources and implemented real-time decision-making algorithms.
+            </div>
+            <button class="btn btn-primary" onclick="closeModal('financial')">Close</button>
+        </div>
+    </div>
+
+    <div id="modal-IOAI" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">IOAI</div>
+            <div class="modal-text">
+                The AI Olympiad is a national competition held in three stages: Basic Theory, Advanced Theory, and a hands-on Practical round.
+Top performers are awarded medals and national recognition for their achievements.
+Medalists and selected teams then represent the country at the international Olympiad, where teamwork, collaboration, and applied AI skills are showcased.
+            </div>
+            <button class="btn btn-primary" onclick="closeModal('IOAI')">Close</button>
+            <a target="_blank" class="btn btn-primary" href="https://ioai-official.org/">view website</a>
+        </div>
+    </div>
+
+    <div id="modal-elecomp" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">ELECOMP Tech Exhibition Participation</div>
+            <div class="modal-text">
+                Showcased our AI-powered system for financial and crypto market prediction and automated investment consulting at ELECOMP 2024.  
+                Presented the project to investors and industry experts, leading to collaborations with cryptocurrency exchanges and fintech startups.  
+                Demonstrated real-time analytics, predictive modeling, and intelligent advisory capabilities designed to enhance decision-making for traders.
+            </div>
+
+            <button class="btn btn-primary" onclick="closeModal('elecomp')">Close</button>
+            <a target="_blank" class="btn btn-primary" href="https://www.elecompiran.com/">view website</a>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"><span id="toast-message"></span></div>
+
+    <script>
+        /* ---------- Theme handling ---------- */
+        const THEME_KEY = 'portfolio_theme'; // 'dark' or 'light'
+        const bodyEl = document.documentElement; // add class to <html> or <body>. Using <html> (documentElement) gives broader effect.
+        const themeBtn = document.getElementById('themeToggle');
+
+        function applyTheme(theme){
+            if(theme === 'light'){
+                bodyEl.classList.add('light-theme');
+                themeBtn.textContent = '☀️';
+                themeBtn.setAttribute('aria-pressed','true');
+            } else {
+                bodyEl.classList.remove('light-theme');
+                themeBtn.textContent = '🌙';
+                themeBtn.setAttribute('aria-pressed','false');
+            }
+        }
+
+        function toggleTheme(){
+            const current = localStorage.getItem(THEME_KEY) || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+            const next = current === 'light' ? 'dark' : 'light';
+            localStorage.setItem(THEME_KEY, next);
+            applyTheme(next);
+            showToast(next === 'light' ? 'Light Theme' : 'Dark Theme');
+        }
+        function copyEmail() {
+            const email = "t.elahibakhsh@gmail.com";
+            
+            // کپی کردن ایمیل به کلیپ‌بورد
+            navigator.clipboard.writeText(email).then(() => {
+                // پیغام نمایش می‌دهیم
+                showToast("Email copied!");
+            }).catch(err => {
+                console.error("Failed to copy: ", err);
+            });
+        }
+
+        function copyNumber() {
+            const number = "09126512463";
+            
+            // کپی کردن ایمیل به کلیپ‌بورد
+            navigator.clipboard.writeText(number).then(() => {
+                // پیغام نمایش می‌دهیم
+                showToast("phone number copied!");
+            }).catch(err => {
+                console.error("Failed to copy: ", err);
+            });
+        }
+
+        function initTheme(){
+            const saved = localStorage.getItem(THEME_KEY);
+            if(saved){
+                applyTheme(saved);
+            } else {
+                const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+                applyTheme(prefersLight ? 'light' : 'dark');
+            }
+        }
+
+        /* ---------- Existing UI / intro logic (kept) ---------- */
+        let introPlayed = false;
+
+        function replayIntro(){
+            introPlayed = false;
+            playIntroSequence();
+        }
+
+        function playIntroSequence() {
+            if (introPlayed) return;
+            introPlayed = true;
+
+            const introElements = document.querySelectorAll('.intro-element');
+            const metaItems = document.querySelectorAll('.meta-item');
+            const sections = document.querySelectorAll('.section');
+            const skillCards = document.querySelectorAll('.skill-card');
+            const badges = document.querySelectorAll('.highlight-badge');
+
+            introElements.forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateY(30px)'; });
+            metaItems.forEach(el => el.classList.remove('visible'));
+            sections.forEach(el => el.classList.remove('visible'));
+
+            skillCards.forEach(card => {
+                const progressBar = card.querySelector('.progress-bar');
+                const percent = card.querySelector('.progress-percent');
+                progressBar.style.width = '6%';
+                percent.textContent = '6%';
+            });
+
+            badges.forEach(badge => {
+                badge.style.animation = 'none';
+                badge.offsetHeight;
+                badge.style.animation = null;
+            });
+
+            setTimeout(() => {
+                if(introElements[0]){ introElements[0].style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)'; introElements[0].style.opacity = '1'; introElements[0].style.transform = 'translateY(0)'; }
+            }, 300);
+
+            setTimeout(() => {
+                if(introElements[1]){ introElements[1].style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)'; introElements[1].style.opacity = '1'; introElements[1].style.transform = 'translateY(0)'; }
+            }, 600);
+
+            setTimeout(() => {
+                metaItems.forEach((item, index) => { setTimeout(()=> item.classList.add('visible'), index*150) });
+            }, 900);
+
+            setTimeout(() => {
+                if(introElements[2]){ introElements[2].style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)'; introElements[2].style.opacity = '1'; introElements[2].style.transform = 'translateY(0)'; }
+            }, 1500);
+
+            setTimeout(() => {
+                badges.forEach((badge, index) => {
+                    badge.style.animationDelay = (index * 0.1) + 's';
+                    badge.style.animation = 'badgePop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards';
+                });
+            }, 1700);
+
+            setTimeout(() => {
+                sections.forEach((section, index) => { setTimeout(()=> section.classList.add('visible'), index*200) });
+            }, 2000);
+
+            setTimeout(() => {
+                skillCards.forEach((card, index) => {
+                    setTimeout(() => {
+                        const target = parseInt(card.dataset.target);
+                        const progressBar = card.querySelector('.progress-bar');
+                        const percent = card.querySelector('.progress-percent');
+
+                        progressBar.style.width = target + '%';
+
+                        let current = 6;
+                        const increment = (target - 6) / 40;
+                        const counter = setInterval(() => {
+                            current += increment;
+                            if (current >= target) { current = target; clearInterval(counter); }
+                            percent.textContent = Math.round(current) + '%';
+                        }, 40);
+
+                    }, index * 400);
+                });
+            }, 3000);
+        }
+
+        function expandPill(element, description) { showToast(description); }
+        function openModal(type){ const modal = document.getElementById('modal-' + type); modal.classList.add('show'); }
+        function closeModal(type){ const modal = document.getElementById('modal-' + type); modal.classList.remove('show'); }
+
+        function showToast(message){
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            setTimeout(()=> toast.classList.remove('show'), 3000);
+        }
+
+        // Close modals when clicking outside
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) { e.target.classList.remove('show'); }
+        });
+
+        // small hover interactive effect for skill cards
+        document.querySelectorAll('.skill-card').forEach(card => {
+            card.addEventListener('mouseenter', () => { card.style.transform = 'translateY(-8px) scale(1.02)'; });
+            card.addEventListener('mouseleave', () => { card.style.transform = 'translateY(0) scale(1)'; });
+        });
+
+        // init on load
+        window.addEventListener('load', () => {
+            initTheme();
+            setTimeout(playIntroSequence, 800);
+        });
+    </script>
+</body>
+</html>
