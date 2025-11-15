@@ -545,6 +545,19 @@
                                 <button class="btn" onclick="openModal('petrochemical')">Details</button>
                             </div>
                         </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div>
+                                    <div class="timeline-year">2024</div>
+                                    <div class="timeline-title">Finalist in Data Science Olympics - Quera</div>
+                                    <div class="timeline-desc">Ranked 21st nationally after completing two data science tasks in the final stage.</div>
+                                </div>
+                                <button class="btn" onclick="openModal('techolympic')">Details</button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -668,6 +681,38 @@ Medalists and selected teams then represent the country at the international Oly
             <a target="_blank" class="btn btn-primary" href="https://www.elecompiran.com/">view website</a>
         </div>
     </div>
+
+    <div id="modal-techolympic" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">Finalist in Data Science Olympiad of Khoora Technology</div>
+            <div class="modal-text">
+                The Data Science Competition of Technology Olympics  was held in two stages. In the first stage, which was online, we ranked in the top 50 teams selected. In the second stage, held in person at Pardis Technology Park, our team achieved the 21st national rank after completing two data science tasks.
+            </div>
+
+            <button class="btn btn-primary" onclick="closeModal('techolympic')">Close</button>
+            <button class="btn btn-primary" onclick="openCertificate('techolympic')">View Certificate</button>
+        </div>
+    </div>
+
+
+            <!-- New certificate modal (lightbox-style, same theme) -->
+            <div id="modal-cert-techolympic" class="modal" aria-hidden="true" role="dialog">
+                <div class="modal-content" style="max-width:900px;padding:18px;display:flex;flex-direction:column;align-items:center;">
+                    <div class="modal-title" style="text-align:center;margin-bottom:12px;">Certificate — Data Science Olympiad</div>
+                    <div class="modal-text" style="padding:0;margin:0;width:100%;display:flex;justify-content:center;">
+                        <!-- change the src to your actual certificate jpg path -->
+                        <img id="cert-image-techolympic" src="certificate.jpg" alt="Data Science Olympiad Certificate"
+                            style="max-width:100%;height:auto;border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,0.4);">
+                    </div>
+
+                    <div style="display:flex;gap:10px;justify-content:center;margin-top:14px;width:100%;">
+                        <a id="cert-download-techolympic" class="btn" href="certificate.jpg" download>Download</a>
+                        <button class="btn btn-primary" onclick="closeCertificate('techolympic')">Close</button>
+                    </div>
+                </div>
+            </div>
+
+
 
     <div id="toast" class="toast"><span id="toast-message"></span></div>
 
@@ -814,6 +859,32 @@ Medalists and selected teams then represent the country at the international Oly
             }, 3000);
         }
 
+            function openCertificate(key){
+            const modal = document.getElementById('modal-cert-' + key);
+            const mainModal = document.getElementById('modal-' + key);
+            if(!modal) {
+                showToast('Certificate not found.');
+                return;
+            }
+            // optionally ensure image src exists or update dynamically
+            const img = document.getElementById('cert-image-' + key);
+            const download = document.getElementById('cert-download-' + key);
+            // if you want to dynamically set the image path: img.src = `certs/${key}-certificate.jpg`;
+            // show the cert modal
+            modal.classList.add('show');
+            // dim the parent modal (if open) to keep focus on certificate
+            if(mainModal) mainModal.style.opacity = '0.4';
+            modal.setAttribute('aria-hidden','false');
+        }
+
+        function closeCertificate(key){
+            const modal = document.getElementById('modal-cert-' + key);
+            const mainModal = document.getElementById('modal-' + key);
+            if(!modal) return;
+            modal.classList.remove('show');
+            if(mainModal) mainModal.style.opacity = ''; // restore
+            modal.setAttribute('aria-hidden','true');
+        }
         function expandPill(element, description) { showToast(description); }
         function openModal(type){ const modal = document.getElementById('modal-' + type); modal.classList.add('show'); }
         function closeModal(type){ const modal = document.getElementById('modal-' + type); modal.classList.remove('show'); }
@@ -835,6 +906,27 @@ Medalists and selected teams then represent the country at the international Oly
         document.querySelectorAll('.skill-card').forEach(card => {
             card.addEventListener('mouseenter', () => { card.style.transform = 'translateY(-8px) scale(1.02)'; });
             card.addEventListener('mouseleave', () => { card.style.transform = 'translateY(0) scale(1)'; });
+        });
+
+        // close certificate modal when clicking outside (re-uses existing document click handler, but ensure .modal click closes)
+        // Your existing global listener already does: if (e.target.classList.contains('modal')) { e.target.classList.remove('show'); }
+        // To ensure parent modal opacity resets when clicking outside certificate modal, add:
+        document.addEventListener('click', (e) => {
+            // if clicked outside a cert modal content
+            if (e.target.classList && e.target.classList.contains('modal') && e.target.id.startsWith('modal-cert-')) {
+                const key = e.target.id.replace('modal-cert-','');
+                closeCertificate(key);
+            }
+        });
+
+        // Optional: keyboard support: Esc closes certificate
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'Escape'){
+                document.querySelectorAll('[id^="modal-cert-"].show').forEach(m => {
+                    const key = m.id.replace('modal-cert-','');
+                    closeCertificate(key);
+                });
+            }
         });
 
         // init on load
