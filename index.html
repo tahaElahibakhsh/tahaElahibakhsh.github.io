@@ -558,6 +558,18 @@
                             </div>
                         </div>
 
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div>
+                                    <div class="timeline-year">2025</div>
+                                    <div class="timeline-title">7th Place in AI Security Hackathon – Attack & Defense on LLMs</div>
+                                    <div class="timeline-desc">Ranked 7st nationally after completing 3 stage of Secure AI Hackathon and a problem-driven national competition focused on Large Language Model Security.</div>
+                                </div>
+                                <button class="btn" onclick="openModal('LLM Security')">Details</button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -604,6 +616,17 @@
                             <div class="project-desc"> DL Prediction Models on Dataset with more than 80% accuracy</div>
                             <div class="project-buttons">
                                 <a target="_blank" class="btn" href="https://github.com/tahaElahibakhsh/deep_learning">View</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-item">
+                        <div class="project-thumb thumb-2">ML</div>
+                        <div class="project-content">
+                            <div class="project-title">AI & LLM secutity model and tasks</div>
+                            <div class="project-desc">Marcus Guard Agent is designed to defend LLM systems against malicious or adversarial prompts.</div>
+                            <div class="project-buttons">
+                                <a target="_blank" class="btn" href="https://github.com/tahaElahibakhsh/AI-SECURITY-MCI">View</a>
                             </div>
                         </div>
                     </div>
@@ -684,13 +707,25 @@ Medalists and selected teams then represent the country at the international Oly
 
     <div id="modal-techolympic" class="modal">
         <div class="modal-content">
-            <div class="modal-title">Finalist in Data Science Olympiad of Khoora Technology</div>
+            <div class="modal-title">Finalist in Data Science Olympics</div>
             <div class="modal-text">
-                The Data Science Competition of Technology Olympics  was held in two stages. In the first stage, which was online, we ranked in the top 50 teams selected. In the second stage, held in person at Pardis Technology Park, our team achieved the 21st national rank after completing two data science tasks.
+                The Data Science Competition of Technology Olympics was held in two stages. In the first stage, which was online, we ranked in the top 50 teams selected. In the second stage, held in person at Pardis Technology Park, our team achieved the 21st national rank after completing two data science tasks.
             </div>
 
             <button class="btn btn-primary" onclick="closeModal('techolympic')">Close</button>
             <button class="btn btn-primary" onclick="openCertificate('techolympic')">View Certificate</button>
+        </div>
+    </div>
+
+    <div id="modal-LLM Security" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">7th Place in AI Security Hackathon – Attack & Defense on LLMs</div>
+            <div class="modal-text">
+                The Secure AI Hackathon was a national competition focused on Large Language Model Security. It was designed to identify and develop talent in AI security. The event was the 12th Quera Hackathon and marked the first collaboration with Hamrah Aval, Iran’s largest mobile operator and a key supporter of digital innovation.
+            </div>
+
+            <button class="btn btn-primary" onclick="closeModal('LLM Security')">Close</button>
+            <button class="btn btn-primary" onclick="openCertificate('LLM Security')">View Certificate</button>
         </div>
     </div>
 
@@ -701,13 +736,29 @@ Medalists and selected teams then represent the country at the international Oly
                     <div class="modal-title" style="text-align:center;margin-bottom:12px;">Certificate — Data Science Olympiad</div>
                     <div class="modal-text" style="padding:0;margin:0;width:100%;display:flex;justify-content:center;">
                         <!-- change the src to your actual certificate jpg path -->
-                        <img id="cert-image-techolympic" src="certificate.jpg" alt="Data Science Olympiad Certificate"
+                        <img id="cert-image-techolympic" src="certificates/certificate.jpg" alt="Data Science Olympiad Certificate"
                             style="max-width:100%;height:auto;border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,0.4);">
                     </div>
 
                     <div style="display:flex;gap:10px;justify-content:center;margin-top:14px;width:100%;">
-                        <a id="cert-download-techolympic" class="btn" href="certificate.jpg" download>Download</a>
+                        <a id="cert-download-techolympic" class="btn" href="certificates/certificate.jpg" download>Download</a>
                         <button class="btn btn-primary" onclick="closeCertificate('techolympic')">Close</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modal-cert-LLM Security" class="modal" aria-hidden="true" role="dialog">
+                <div class="modal-content" style="max-width:900px;padding:18px;display:flex;flex-direction:column;align-items:center;">
+                    <div class="modal-title" style="text-align:center;margin-bottom:12px;">Certificate — Secure MCI LLM</div>
+                    <div class="modal-text" style="padding:0;margin:0;width:100%;display:flex;justify-content:center;">
+                        <!-- change the src to your actual certificate jpg path -->
+                        <img id="cert-image-LLM Security" src="certificates/certificate2.jpg" alt="Secure MCI LLM"
+                            style="max-width:100%;height:auto;border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,0.4);">
+                    </div>
+
+                    <div style="display:flex;gap:10px;justify-content:center;margin-top:14px;width:100%;">
+                        <a id="cert-download-LLM Security" class="btn" href="certificates/certificate2.jpg" download>Download</a>
+                        <button class="btn btn-primary" onclick="closeCertificate('LLM Security')">Close</button>
                     </div>
                 </div>
             </div>
