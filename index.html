@@ -261,6 +261,21 @@
             .cta-buttons{flex-direction:column}
             .controls{top:10px;right:10px}
         }
+
+        /* Selected Projects search and category filters */
+        .project-discovery{display:grid;gap:12px;margin:0 0 22px}
+        .project-search input{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:var(--glass);color:var(--text-main);font:inherit;outline:none;transition:border-color var(--transition-fast),box-shadow var(--transition-fast)}
+        .project-search input::placeholder{color:var(--muted-2)}
+        .project-search input:focus{border-color:rgba(var(--accent1),.55);box-shadow:0 0 0 3px rgba(var(--accent1),.1)}
+        .project-filter-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+        .project-filters{display:flex;flex-wrap:wrap;gap:8px}
+        .project-filter{padding:8px 13px;border:1px solid var(--border);border-radius:999px;background:var(--glass);color:var(--text-muted);font:inherit;font-size:12px;cursor:pointer;transition:all var(--transition-fast)}
+        .project-filter:hover,.project-filter[aria-pressed="true"]{background:rgba(var(--accent1),.14);border-color:rgba(var(--accent1),.4);color:rgb(var(--accent1))}
+        .project-count{margin-left:auto;color:var(--muted-2);font-size:12px;white-space:nowrap}
+        .project-item[hidden]{display:none!important}
+        .project-empty-state{padding:16px;color:var(--muted-2);font-size:13px;border:1px dashed var(--border);border-radius:10px}
+        .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+        @media(max-width:600px){.project-filter-row{align-items:flex-start}.project-count{margin-left:0}.project-filters{gap:7px}.project-filter{padding:8px 11px}}
     </style>
 </head>
 <body>
@@ -619,7 +634,28 @@
 
                 <div class="section">
                     <h3>Selected Projects</h3>
-                    <div class="project-item">
+                    <div class="project-discovery">
+                        <label class="project-search">
+                            <span class="sr-only">Search selected projects</span>
+                            <input id="projectSearch" type="search" placeholder="Search projects..." autocomplete="off" aria-label="Search projects">
+                        </label>
+                        <div class="project-filter-row">
+                            <div class="project-filters" role="group" aria-label="Filter projects by category">
+                                <button class="project-filter" type="button" data-project-filter="all" aria-pressed="true">All</button>
+                                <button class="project-filter" type="button" data-project-filter="education" aria-pressed="false">Education</button>
+                                <button class="project-filter" type="button" data-project-filter="ai" aria-pressed="false">AI</button>
+                                <button class="project-filter" type="button" data-project-filter="robotics" aria-pressed="false">Robotics</button>
+                                <button class="project-filter" type="button" data-project-filter="ai-security" aria-pressed="false">AI Security</button>
+                                <button class="project-filter" type="button" data-project-filter="security" aria-pressed="false">Security</button>
+                                <button class="project-filter" type="button" data-project-filter="vision" aria-pressed="false">Computer Vision</button>
+                                <button class="project-filter" type="button" data-project-filter="nlp" aria-pressed="false">NLP</button>
+                            </div>
+                            <span id="projectCount" class="project-count" aria-live="polite"></span>
+                        </div>
+                        <p id="projectEmptyState" class="project-empty-state" hidden>No projects match this search.</p>
+                    </div>
+
+                    <div class="project-item" data-category="ai nlp">
                         <div class="project-thumb thumb-1">NLP</div>
                         <div class="project-content">
                             <div class="project-title">Natural Language Processing System</div>
@@ -631,7 +667,7 @@
                         </div>
                     </div>
 
-                    <div class="project-item">
+                    <div class="project-item" data-category="ai">
                         <div class="project-thumb thumb-2">RL</div>
                         <div class="project-content">
                             <div class="project-title">Reinforcement Learning & Agentical Trading Agent</div>
@@ -642,7 +678,7 @@
                         </div>
                     </div>
 
-                    <div class="project-item">
+                    <div class="project-item" data-category="ai">
                         <div class="project-thumb thumb-1">ML</div>
                         <div class="project-content">
                             <div class="project-title">Machine Learning Prediction Models</div>
@@ -653,7 +689,7 @@
                         </div>
                     </div>
 
-                    <div class="project-item">
+                    <div class="project-item" data-category="ai">
                         <div class="project-thumb thumb-2">ML</div>
                         <div class="project-content">
                             <div class="project-title">Deep Learning Prediction Models</div>
@@ -664,7 +700,7 @@
                         </div>
                     </div>
 
-                    <div class="project-item">
+                    <div class="project-item" data-category="ai-security ai">
                         <div class="project-thumb thumb-2">ML</div>
                         <div class="project-content">
                             <div class="project-title">AI & LLM secutity model and tasks</div>
@@ -676,7 +712,7 @@
                     </div>
 
                     <!-- Generative AI Projects -->
-                    <div class="project-item">
+                    <div class="project-item" data-category="ai">
                         <div class="project-thumb thumb-2">GenAI</div>
 
                         <div class="project-content">
@@ -700,7 +736,7 @@
                     </div>
 
                     <!-- Machine Learning From Scratch -->
-                    <div class="project-item">
+                    <div class="project-item" data-category="ai">
                         <div class="project-thumb thumb-1">ML</div>
 
                         <div class="project-content">
@@ -724,7 +760,7 @@
                     </div>
 
                     <!-- Computer Vision & Image Segmentation -->
-                    <div class="project-item">
+                    <div class="project-item" data-category="vision ai">
                         <div class="project-thumb thumb-1">CV</div>
 
                         <div class="project-content">
@@ -748,7 +784,7 @@
                     </div>
 
                     <!-- Robotics & Simulation -->
-                    <div class="project-item">
+                    <div class="project-item" data-category="robotics">
                         <div class="project-thumb thumb-2">RCJ</div>
 
                         <div class="project-content">
@@ -773,7 +809,7 @@
 
 
                     <!-- Natural Language Processing -->
-                    <div class="project-item">
+                    <div class="project-item" data-category="ai nlp">
                         <div class="project-thumb thumb-1">NLP</div>
 
                         <div class="project-content">
@@ -799,7 +835,7 @@
                     </div>
 
                     <!-- Script Malware Detection -->
-                    <div class="project-item">
+                    <div class="project-item" data-category="security">
                         <div class="project-thumb thumb-2">SEC</div>
 
                         <div class="project-content">
@@ -825,7 +861,7 @@
                     </div>
 
                     <!-- Mr. Avocado — KNN -->
-                    <div class="project-item">
+                    <div class="project-item" data-category="ai">
                         <div class="project-thumb thumb-1">KNN</div>
 
                         <div class="project-content">
@@ -851,7 +887,7 @@
                     </div>
 
                     <!-- Iran AI Olympiad Summer Camp 2026 -->
-                    <div class="project-item">
+                    <div class="project-item" data-category="education ai">
                         <div class="project-thumb thumb-1">AIO</div>
                         <div class="project-content">
                             <div class="project-title">Iran AI Olympiad Summer Camp 2026</div>
@@ -1240,9 +1276,53 @@
             }
         });
 
+
+        function initProjectFilters(){
+            const cards = Array.from(document.querySelectorAll('.project-item[data-category]'));
+            const filterBar = document.querySelector('.project-filters');
+            const searchInput = document.getElementById('projectSearch');
+            const count = document.getElementById('projectCount');
+            const emptyState = document.getElementById('projectEmptyState');
+            if(!cards.length || !filterBar) return;
+            let activeCategory = 'all';
+            const update = () => {
+                const query = (searchInput?.value || '').trim().toLocaleLowerCase();
+                let visible = 0;
+                cards.forEach(card => {
+                    const categories = (card.dataset.category || '').split(/\s+/);
+                    const matchesCategory = activeCategory === 'all' || categories.includes(activeCategory);
+                    const matchesSearch = !query || card.textContent.toLocaleLowerCase().includes(query);
+                    card.hidden = !(matchesCategory && matchesSearch);
+                    if(!card.hidden) visible++;
+                });
+                if(count) count.textContent = `${visible} / ${cards.length} projects`;
+                if(emptyState) emptyState.hidden = visible > 0;
+            };
+            filterBar.addEventListener('click', event => {
+                const button = event.target.closest('[data-project-filter]');
+                if(!button) return;
+                activeCategory = button.dataset.projectFilter;
+                filterBar.querySelectorAll('[data-project-filter]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+                update();
+            });
+            searchInput?.addEventListener('input', update);
+            update();
+        }
+
+        function sortExperienceChronologically(){
+            const timeline = document.querySelector('.timeline');
+            if(!timeline) return;
+            const items = Array.from(timeline.querySelectorAll('.timeline-item')).map((item,index) => ({item,index}));
+            const yearOf = item => Number(item.querySelector('.timeline-year')?.textContent.match(/\d{4}/)?.[0] || 9999);
+            items.sort((a,b) => yearOf(a.item) - yearOf(b.item) || a.index - b.index);
+            items.forEach(({item}) => timeline.appendChild(item));
+        }
+
         // init on load
         window.addEventListener('load', () => {
             initTheme();
+            initProjectFilters();
+            sortExperienceChronologically();
             setTimeout(playIntroSequence, 800);
         });
     </script>
